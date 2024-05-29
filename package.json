@@ -1,0 +1,15 @@
+{
+  "name": "cdllife-neural-net",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "0BSD",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.19.0"
+  }
+}
