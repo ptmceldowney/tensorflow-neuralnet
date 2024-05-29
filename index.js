@@ -1,6 +1,10 @@
 import * as tf from '@tensorflow/tfjs-node';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { readFileSync } from 'fs';
+
+const __filePath = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filePath);
 
 const events = ['apply', 'wait', 'sms', 'email', 'hire'];
 const entities = ['driver', 'us'];
@@ -84,16 +88,13 @@ function padSequence(sequence, maxLength) {
  * @returns {Object}
  */
 function loadTrainingData() {
-  const trainingData = [
-    {
-      input: oneHotEncode('driver:apply|us:wait|us:sms|driver:hire'),
-      output: [1],
-    },
-    { input: oneHotEncode('driver:apply|us:wait|us:sms'), output: [0] },
-  ];
-
+  const trainingDataPath = path.join(__dirname, 'data/training.json');
+  const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
+  console.log(trainingData);
   // need to pad the sequence for varying encoding lengths
-  const inputs = trainingData.map(data => padSequence(data.input, inputLength));
+  const inputs = trainingData.map(data =>
+    padSequence(oneHotEncode(data.input), inputLength)
+  );
   const labels = trainingData.map(data => data.output);
   const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
   const ys = tf.tensor2d(labels, [labels.length, 1]);
@@ -118,8 +119,7 @@ async function trainModel() {
     model.summary();
 
     // save the model
-    const __filePath = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filePath);
+
     const modelPath = path.join(__dirname, 'model');
     await model.save(`file://${modelPath}`);
     console.log('\nModel saved to ', modelPath);
