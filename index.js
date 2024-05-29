@@ -90,7 +90,6 @@ function padSequence(sequence, maxLength) {
 function loadTrainingData() {
   const trainingDataPath = path.join(__dirname, 'data/training.json');
   const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
-  console.log(trainingData);
   // need to pad the sequence for varying encoding lengths
   const inputs = trainingData.map(data =>
     padSequence(oneHotEncode(data.input), inputLength)
@@ -125,7 +124,7 @@ async function trainModel() {
     console.log('\nModel saved to ', modelPath);
 
     // Example prediciton
-    const newSequence = 'driver:apply|us:wait|us:sms';
+    const newSequence = 'driver:apply|us:sms|driver:hire';
     const encodedNewSequence = padSequence(
       oneHotEncode(newSequence),
       inputLength
