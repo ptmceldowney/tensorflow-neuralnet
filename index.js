@@ -1,10 +1,14 @@
 import * as tf from '@tensorflow/tfjs-node';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
 
 const __filePath = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filePath);
+const trainingDataPath = path.join(__dirname, 'data/training.json');
+const modelPath = path.join(__dirname, 'model');
 
 const events = ['apply', 'wait', 'sms', 'email', 'hire'];
 const entities = ['driver', 'us'];
@@ -59,7 +63,9 @@ function createModel() {
       inputShape: [inputLength],
     })
   );
+  model.add(tf.layers.dense({ units: 10, activation: 'relu' }));
   model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+
   model.compile({
     optimizer: 'adam',
     loss: 'binaryCrossentropy',
@@ -88,7 +94,6 @@ function padSequence(sequence, maxLength) {
  * @returns {Object}
  */
 function loadTrainingData() {
-  const trainingDataPath = path.join(__dirname, 'data/training.json');
   const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
   // need to pad the sequence for varying encoding lengths
   const inputs = trainingData.map(data =>
@@ -101,12 +106,36 @@ function loadTrainingData() {
 }
 
 /**
+ * Attempts to load a saved model, if not found it will create a new one
+ * @returns {tf.Sequential | tf.LayersModel}
+ */
+async function loadModel() {
+  let model;
+
+  // Check if a saved model exists and load it
+  try {
+    model = await tf.loadLayersModel(`file://${modelPath}/model.json`);
+    model.compile({
+      optimizer: 'adam',
+      loss: 'binaryCrossentropy',
+      metrics: ['accuracy'],
+    });
+    console.log('Model loaded from file');
+  } catch (error) {
+    console.log('No saved model found, creating a new one');
+    model = createModel();
+  }
+
+  return model;
+}
+
+/**
  * Train the model
  */
 async function trainModel() {
   try {
+    const model = await loadModel();
     const { xs, ys } = loadTrainingData();
-    const model = createModel();
     await model.fit(xs, ys, {
       epochs: 100,
       callbacks: {
@@ -115,11 +144,7 @@ async function trainModel() {
       },
     });
 
-    model.summary();
-
     // save the model
-
-    const modelPath = path.join(__dirname, 'model');
     await model.save(`file://${modelPath}`);
     console.log('\nModel saved to ', modelPath);
 
@@ -140,8 +165,82 @@ async function trainModel() {
     console.log(`Predicted probability: ${predictedValue}`);
     console.log(`Prediction: ${result}`);
   } catch (error) {
-    console.error(error);
+    console.error('error training model', error);
   }
 }
 
-trainModel();
+/**
+ * Function to add new training data and retrain the model
+ * @param {string} sequence - The sequence of events
+ * @param {number} output - The actual outcome (0 or 1)
+ */
+async function addTrainingData(sequence, output) {
+  try {
+    // Load the current training data
+    const currentData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
+
+    currentData.push({ input: sequence, output: output });
+
+    // Save updated training data
+    writeFileSync(
+      trainingDataPath,
+      JSON.stringify(currentData, null, 2),
+      'utf8'
+    );
+
+    // Encode and pad the updated training data
+    const inputs = currentData.map(data =>
+      padSequence(oneHotEncode(data.input), inputLength)
+    );
+    const labels = currentData.map(data => [data.output]);
+
+    const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
+    const ys = tf.tensor2d(labels, [labels.length, 1]);
+
+    let model = await loadModel();
+    await model.fit(xs, ys, {
+      epochs: 100,
+      callbacks: {
+        onEpochEnd: (epoch, log) =>
+          console.log(`Epoch ${epoch}: loss = ${log.loss}`),
+      },
+    });
+
+    // Save the retrained model
+    await model.save(`file://${modelPath}`);
+    console.log(`Model retrained and saved to ${modelPath}`);
+  } catch (error) {
+    console.error('Error adding new training data', error);
+  }
+}
+
+// Use yargs to parse CLI arguments
+// node . train
+// node . add -s 'driver:apply|us:sms|driver:hire' -o 1
+yargs(hideBin(process.argv))
+  .command('train', 'Train the model from scratch', {}, () => {
+    trainModel();
+  })
+  .command(
+    'add',
+    'Add new training data and retrain the model',
+    {
+      sequence: {
+        description: 'The sequence of events (driver:apply|us:sms|driver:hire)',
+        alias: 's',
+        type: 'string',
+        demandOption: true,
+      },
+      output: {
+        description: 'The actual outcome (0 or 1)',
+        alias: 'o',
+        type: 'number',
+        demandOption: true,
+      },
+    },
+    argv => {
+      addTrainingData(argv.sequence, argv.output);
+    }
+  )
+  .demandCommand(1, 'You need to specify a command (train or add)')
+  .help().argv;
