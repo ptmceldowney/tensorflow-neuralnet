@@ -18,4 +18,11 @@ const __dirname = path.dirname(__filePath);
 const trainingDataPath = path.join(__dirname, '../data/training.json');
 const modelPath = path.join(__dirname, '../model');
 
-export { events, entities, inputLength, trainingDataPath, modelPath };
+export {
+  events,
+  entities,
+  inputLength,
+  trainingDataPath,
+  modelPath,
+  eventEncodingLength,
+};

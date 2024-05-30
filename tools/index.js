@@ -2,11 +2,10 @@ import * as tf from '@tensorflow/tfjs-node';
 import {
   modelPath,
   inputLength,
-  trainingDataPath,
   entities,
   events,
+  eventEncodingLength,
 } from './config.js';
-import { readFileSync } from 'fs';
 
 /**
  * Function to one-hot encode a sequence of events
@@ -52,22 +51,6 @@ function padSequence(sequence, maxLength) {
 }
 
 /**
- * Loads training data and encodes it into inputs and labels
- * @returns {{xs: tf.Tensor2D, ys: tf.Tensor2D}}
- */
-function loadTrainingData() {
-  const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
-  // need to pad the sequence for varying encoding lengths
-  const inputs = trainingData.map(data =>
-    padSequence(oneHotEncode(data.input), inputLength)
-  );
-  const labels = trainingData.map(data => data.output);
-  const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
-  const ys = tf.tensor2d(labels, [labels.length, 1]);
-  return { xs, ys };
-}
-
-/**
  * Attempts to load a saved model, if not found it will create a new one
  * @returns {tf.Sequential | tf.LayersModel}
  */
@@ -99,20 +82,21 @@ function createModel() {
   const model = tf.sequential();
   model.add(
     tf.layers.dense({
-      units: 10,
+      units: 128,
       activation: 'relu',
       inputShape: [inputLength],
     })
   );
-  model.add(tf.layers.dense({ units: 10, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+  model.add(
+    tf.layers.dense({ units: eventEncodingLength, activation: 'softmax' })
+  );
 
   model.compile({
     optimizer: 'adam',
-    loss: 'binaryCrossentropy',
+    loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   });
   return model;
 }
 
-export { loadTrainingData, loadModel, createModel, oneHotEncode, padSequence };
+export { loadModel, createModel, oneHotEncode, padSequence };

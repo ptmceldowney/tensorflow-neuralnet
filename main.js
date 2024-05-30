@@ -5,11 +5,17 @@ import { hideBin } from 'yargs/helpers';
 import {
   createModel,
   loadModel,
-  loadTrainingData,
   oneHotEncode,
   padSequence,
 } from './tools/index.js';
-import { modelPath, trainingDataPath, inputLength } from './tools/config.js';
+import {
+  modelPath,
+  trainingDataPath,
+  inputLength,
+  eventEncodingLength,
+  events,
+  entities,
+} from './tools/config.js';
 
 /**
  * Trains an existing model or creates a new model based on the cli argument
@@ -18,7 +24,17 @@ import { modelPath, trainingDataPath, inputLength } from './tools/config.js';
 async function trainModel(newModel) {
   try {
     const model = await (newModel ? createModel() : loadModel());
-    const { xs, ys } = loadTrainingData();
+    const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
+
+    // Encode and pad the training data
+    const inputs = trainingData.map(data =>
+      padSequence(oneHotEncode(data.input), inputLength)
+    );
+    const outputs = trainingData.map(data => oneHotEncode(data.output));
+
+    const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
+    const ys = tf.tensor2d(outputs, [outputs.length, eventEncodingLength]);
+
     await model.fit(xs, ys, {
       epochs: 100,
       callbacks: {
@@ -58,10 +74,10 @@ async function addTrainingData(sequence, output) {
     const inputs = currentData.map(data =>
       padSequence(oneHotEncode(data.input), inputLength)
     );
-    const labels = currentData.map(data => [data.output]);
+    const outputs = currentData.map(data => [data.output]);
 
     const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
-    const ys = tf.tensor2d(labels, [labels.length, 1]);
+    const ys = tf.tensor2d(outputs, [outputs.length, eventEncodingLength]);
 
     let model = await loadModel();
     await model.fit(xs, ys, {
@@ -86,26 +102,28 @@ async function addTrainingData(sequence, output) {
  */
 async function makePrediction(sequence) {
   try {
-    const model = await loadModel();
     const encodedSequence = padSequence(oneHotEncode(sequence), inputLength);
     const inputTensor = tf.tensor2d([encodedSequence], [1, inputLength]);
-    const prediction = await model.predict(inputTensor);
-    const predictedValue = prediction.dataSync()[0]; // Extract the prediction value
 
-    // Define a threshold, this can be adjusted if needed just needed a better way to display the prediction
-    const threshold = 0.5;
-    const result = predictedValue > threshold ? 'Hired' : 'Not hired';
-    console.log(`Predicted probability: ${predictedValue}`);
-    console.log(`Prediction: ${result}`);
+    const model = await loadModel();
+    const prediction = model.predict(inputTensor);
+    const predictedIndex = prediction.argMax(-1).dataSync()[0];
+
+    const eventindex = predictedIndex % events.length;
+    const entityIndex = Math.floor(predictedIndex / events.length);
+    const nextStep = `${entities[entityIndex]}:${events[eventindex]}`;
+
+    console.log(`Predicted next step: ${nextStep}`);
   } catch (e) {
     console.error('Error making prediction', e);
   }
 }
 
 // Use yargs to parse CLI arguments
-// node . train
-// node train add -s 'driver:apply|us:sms|driver:hire' -o 1
-// node train predict -s 'driver:apply|us:sms|driver:hire'
+// 1. Train new model: node main.js train -new
+// 2  Train existing model (creates a new one if none exists): node main.js train
+// 3. Add new training data: node main.js train add -s 'driver:apply|us:sms|driver:hire' -o 1
+// 4. Make prediction: node main.js predict -s 'driver:apply|us:sms|driver:hire'
 yargs(hideBin(process.argv))
   .command(
     'train',
