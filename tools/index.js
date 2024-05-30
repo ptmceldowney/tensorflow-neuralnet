@@ -89,9 +89,9 @@ function createModel() {
       inputShape: [inputLength],
     })
   );
-  model.add(tf.layers.dropout({ rate: 0.5 }));
+  model.add(tf.layers.dropout({ rate: 0.4 }));
   model.add(tf.layers.dense({ units: 128, activation: 'relu' }));
-  model.add(tf.layers.dropout({ rate: 0.5 }));
+  model.add(tf.layers.dropout({ rate: 0.4 }));
   model.add(
     tf.layers.dense({ units: eventEncodingLength, activation: 'softmax' })
   );
