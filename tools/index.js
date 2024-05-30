@@ -60,9 +60,11 @@ async function loadModel() {
   // Check if a saved model exists and load it
   try {
     model = await tf.loadLayersModel(`file://${modelPath}/model.json`);
+
+    const optimizer = tf.train.adam(0.001);
     model.compile({
-      optimizer: 'adam',
-      loss: 'binaryCrossentropy',
+      optimizer: optimizer,
+      loss: 'categoricalCrossentropy',
       metrics: ['accuracy'],
     });
     console.log('Model loaded from file');
