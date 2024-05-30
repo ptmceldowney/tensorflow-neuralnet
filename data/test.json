@@ -1,0 +1,42 @@
+[
+  {
+    "input": "driver:apply|us:wait|us:sms|us:email|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:email|us:wait|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:email|us:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:sms|us:email|us:wait|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:wait|us:sms|us:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:apply|us:wait|us:email|us:sms|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:wait|us:sms|us:email|driver:hire|us:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:wait|us:sms|driver:hire|us:email",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:sms|driver:hire|us:wait|us:email|us:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|us:email|us:wait|us:sms|driver:hire",
+    "output": "driver:hire"
+  }
+]

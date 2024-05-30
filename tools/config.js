@@ -15,14 +15,20 @@ const inputLength = maxEvents * eventEncodingLength; // 50
 // paths
 const __filePath = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filePath);
-const trainingDataPath = path.join(__dirname, '../data/training.json');
+const dataPath = path.join(__dirname, '../data');
 const modelPath = path.join(__dirname, '../model');
+
+// data split
+const trainSplit = 0.7;
+const valSplit = 0.15;
 
 export {
   events,
   entities,
   inputLength,
-  trainingDataPath,
+  dataPath,
   modelPath,
   eventEncodingLength,
+  trainSplit,
+  valSplit,
 };

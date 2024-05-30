@@ -10,7 +10,7 @@ import {
 } from './tools/index.js';
 import {
   modelPath,
-  trainingDataPath,
+  dataPath,
   inputLength,
   eventEncodingLength,
   events,
@@ -24,23 +24,45 @@ import {
 async function trainModel(newModel) {
   try {
     const model = await (newModel ? createModel() : loadModel());
-    const trainingData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
+
+    const trainingData = JSON.parse(
+      readFileSync(`${dataPath}/train.json`, 'utf8')
+    );
+    const valData = JSON.parse(
+      readFileSync(`${dataPath}/validation.json`, 'utf8')
+    );
 
     // Encode and pad the training data
-    const inputs = trainingData.map(data =>
+    const trainInputs = trainingData.map(data =>
       padSequence(oneHotEncode(data.input), inputLength)
     );
-    const outputs = trainingData.map(data => oneHotEncode(data.output));
+    const trainOutputs = trainingData.map(data => oneHotEncode(data.output));
+    const trainXs = tf.tensor2d(trainInputs, [trainInputs.length, inputLength]);
+    const trainYs = tf.tensor2d(trainOutputs, [
+      trainOutputs.length,
+      eventEncodingLength,
+    ]);
 
-    const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
-    const ys = tf.tensor2d(outputs, [outputs.length, eventEncodingLength]);
+    // Encode and pad the training data
+    const valInputs = valData.map(data =>
+      padSequence(oneHotEncode(data.input), inputLength)
+    );
+    const valOutputs = valData.map(data => oneHotEncode(data.output));
+    const valXs = tf.tensor2d(valInputs, [valInputs.length, inputLength]);
+    const valYs = tf.tensor2d(valOutputs, [
+      valOutputs.length,
+      eventEncodingLength,
+    ]);
 
-    await model.fit(xs, ys, {
+    const earlyStoppingCallback = tf.callbacks.earlyStopping({
+      monitor: 'val_loss',
+      patience: 5,
+    });
+
+    await model.fit(trainXs, trainYs, {
       epochs: 100,
-      callbacks: {
-        onEpochEnd: (epoch, log) =>
-          console.log(`Epoch ${epoch}: loss = ${log.loss}`),
-      },
+      validationData: [valXs, valYs],
+      callbacks: [earlyStoppingCallback],
     });
 
     // save the model
@@ -59,38 +81,20 @@ async function trainModel(newModel) {
 async function addTrainingData(sequence, output) {
   try {
     // Load the current training data
-    const currentData = JSON.parse(readFileSync(trainingDataPath, 'utf8'));
+    const currentData = JSON.parse(
+      readFileSync(`${dataPath}/train.json`, 'utf8')
+    );
 
     currentData.push({ input: sequence, output: output });
 
     // Save updated training data
     writeFileSync(
-      trainingDataPath,
+      `${dataPath}/train.json`,
       JSON.stringify(currentData, null, 2),
       'utf8'
     );
 
-    // Encode and pad the updated training data
-    const inputs = currentData.map(data =>
-      padSequence(oneHotEncode(data.input), inputLength)
-    );
-    const outputs = currentData.map(data => [data.output]);
-
-    const xs = tf.tensor2d(inputs, [inputs.length, inputLength]);
-    const ys = tf.tensor2d(outputs, [outputs.length, eventEncodingLength]);
-
-    let model = await loadModel();
-    await model.fit(xs, ys, {
-      epochs: 100,
-      callbacks: {
-        onEpochEnd: (epoch, log) =>
-          console.log(`Epoch ${epoch}: loss = ${log.loss}`),
-      },
-    });
-
-    // Save the retrained model
-    await model.save(`file://${modelPath}`);
-    console.log(`Model retrained and saved to ${modelPath}`);
+    trainModel();
   } catch (error) {
     console.error('Error adding new training data', error);
   }
