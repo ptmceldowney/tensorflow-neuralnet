@@ -36,18 +36,11 @@ async function trainModel(newModel) {
     // Encode and pad the training data
     const { inputTensor: trainXs, outputTensor: trainYs } =
       preprocessData(trainingData);
-    // const { inputTensor: valXs, outputTensor: valYs } = preprocessData(valData);
-
-    // const earlyStoppingCallback = tf.callbacks.earlyStopping({
-    //   monitor: 'val_loss',
-    //   patience: 5,
-    //   restoreBestWeights: true,
-    // });
+    const { inputTensor: valXs, outputTensor: valYs } = preprocessData(valData);
 
     await model.fit(trainXs, trainYs, {
       epochs: 100,
-      // validationData: [valXs, valYs],
-      // callbacks: [earlyStoppingCallback],
+      validationData: [valXs, valYs],
     });
 
     // save the model
