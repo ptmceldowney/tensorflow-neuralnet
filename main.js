@@ -7,12 +7,13 @@ import {
   loadModel,
   oneHotEncode,
   padSequence,
+  preprocessData,
 } from './tools/index.js';
 import {
   modelPath,
   dataPath,
   inputLength,
-  eventEncodingLength,
+  featureLength,
   events,
   entities,
 } from './tools/config.js';
@@ -33,36 +34,20 @@ async function trainModel(newModel) {
     );
 
     // Encode and pad the training data
-    const trainInputs = trainingData.map(data =>
-      padSequence(oneHotEncode(data.input), inputLength)
-    );
-    const trainOutputs = trainingData.map(data => oneHotEncode(data.output));
-    const trainXs = tf.tensor2d(trainInputs, [trainInputs.length, inputLength]);
-    const trainYs = tf.tensor2d(trainOutputs, [
-      trainOutputs.length,
-      eventEncodingLength,
-    ]);
+    const { inputTensor: trainXs, outputTensor: trainYs } =
+      preprocessData(trainingData);
+    // const { inputTensor: valXs, outputTensor: valYs } = preprocessData(valData);
 
-    // Encode and pad the training data
-    const valInputs = valData.map(data =>
-      padSequence(oneHotEncode(data.input), inputLength)
-    );
-    const valOutputs = valData.map(data => oneHotEncode(data.output));
-    const valXs = tf.tensor2d(valInputs, [valInputs.length, inputLength]);
-    const valYs = tf.tensor2d(valOutputs, [
-      valOutputs.length,
-      eventEncodingLength,
-    ]);
-
-    const earlyStoppingCallback = tf.callbacks.earlyStopping({
-      monitor: 'val_loss',
-      patience: 5,
-    });
+    // const earlyStoppingCallback = tf.callbacks.earlyStopping({
+    //   monitor: 'val_loss',
+    //   patience: 5,
+    //   restoreBestWeights: true,
+    // });
 
     await model.fit(trainXs, trainYs, {
       epochs: 100,
-      validationData: [valXs, valYs],
-      callbacks: [earlyStoppingCallback],
+      // validationData: [valXs, valYs],
+      // callbacks: [earlyStoppingCallback],
     });
 
     // save the model
@@ -107,15 +92,18 @@ async function addTrainingData(sequence, output) {
 async function makePrediction(sequence) {
   try {
     const encodedSequence = padSequence(oneHotEncode(sequence), inputLength);
-    const inputTensor = tf.tensor2d([encodedSequence], [1, inputLength]);
+    const inputTensor = tf.tensor3d(
+      [encodedSequence],
+      [1, inputLength, featureLength]
+    );
 
     const model = await loadModel();
     const prediction = model.predict(inputTensor);
     const predictedIndex = prediction.argMax(-1).dataSync()[0];
 
-    const eventindex = predictedIndex % events.length;
+    const eventIndex = predictedIndex % events.length;
     const entityIndex = Math.floor(predictedIndex / events.length);
-    const nextStep = `${entities[entityIndex]}:${events[eventindex]}`;
+    const nextStep = `${entities[entityIndex]}:${events[eventIndex]}`;
 
     console.log(`Predicted next step: ${nextStep}`);
   } catch (e) {

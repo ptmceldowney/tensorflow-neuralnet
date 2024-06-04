@@ -4,7 +4,7 @@ import {
   inputLength,
   entities,
   events,
-  eventEncodingLength,
+  featureLength,
 } from './config.js';
 
 /**
@@ -13,27 +13,20 @@ import {
  * @returns {Array<number>} - The one-hot encoded representation of the sequence
  */
 function oneHotEncode(sequence) {
-  const eventMap = {};
-  let index = 0;
-
-  // Create an index map for events
-  entities.forEach(entity => {
-    events.forEach(event => {
-      eventMap[`${entity}:${event}`] = index++;
-    });
-  });
-
   // Create one-hot encoded sequence
   const encodedSequence = [];
-  sequence.split('|').forEach(event => {
-    const encoding = new Array(index).fill(0);
-    if (eventMap[event] !== undefined) {
-      encoding[eventMap[event]] = 1;
-    }
-    encodedSequence.push(encoding);
+  sequence.split('|').forEach(step => {
+    const [entity, event] = step.split(':');
+    const entityIndex = entities.indexOf(entity);
+    const eventIndex = events.indexOf(event);
+
+    const oneHotArray = Array(featureLength).fill(0);
+    oneHotArray[entityIndex * events.length + eventIndex] = 1;
+
+    encodedSequence.push(oneHotArray);
   });
 
-  return encodedSequence.flat();
+  return encodedSequence;
 }
 
 /**
@@ -42,12 +35,12 @@ function oneHotEncode(sequence) {
  * @param {number} maxLength - The length to pad the sequence to
  * @returns {Array<number>} - The padded sequence
  */
-function padSequence(sequence, maxLength) {
-  if (sequence.length >= maxLength) {
-    return sequence.slice(0, maxLength);
-  } else {
-    return sequence.concat(new Array(maxLength - sequence.length).fill(0));
+function padSequence(sequence, inputLength) {
+  while (sequence.length < inputLength) {
+    sequence.push(Array(featureLength).fill(0));
   }
+
+  return sequence.slice(0, inputLength);
 }
 
 /**
@@ -61,9 +54,8 @@ async function loadModel() {
   try {
     model = await tf.loadLayersModel(`file://${modelPath}/model.json`);
 
-    const optimizer = tf.train.adam(0.001);
     model.compile({
-      optimizer: optimizer,
+      optimizer: tf.train.adam(),
       loss: 'categoricalCrossentropy',
       metrics: ['accuracy'],
     });
@@ -83,25 +75,52 @@ async function loadModel() {
 function createModel() {
   const model = tf.sequential();
   model.add(
-    tf.layers.dense({
+    tf.layers.lstm({
       units: 128,
-      activation: 'relu',
-      inputShape: [inputLength],
+      inputShape: [inputLength, featureLength],
+      returnSequences: false,
+      kernelRegularizer: tf.regularizers.l2({ l2: 0.01 }),
     })
   );
-  model.add(tf.layers.dropout({ rate: 0.4 }));
-  model.add(tf.layers.dense({ units: 128, activation: 'relu' }));
-  model.add(tf.layers.dropout({ rate: 0.4 }));
+  model.add(tf.layers.dropout({ rate: 0.5 }));
   model.add(
-    tf.layers.dense({ units: eventEncodingLength, activation: 'softmax' })
+    tf.layers.dense({
+      units: featureLength,
+      activation: 'softmax',
+    })
   );
 
   model.compile({
-    optimizer: 'adam',
+    optimizer: tf.train.adam(),
     loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   });
   return model;
 }
 
-export { loadModel, createModel, oneHotEncode, padSequence };
+/**
+ * Converts data into input and output tensors
+ * @param {*} data
+ * @returns
+ */
+function preprocessData(data) {
+  const inputs = data.map(d =>
+    padSequence(
+      oneHotEncode(d.input, entities, events),
+      inputLength,
+      featureLength
+    )
+  );
+  const outputs = data.map(d => oneHotEncode(d.output, entities, events)[0]); // Output is a single step
+
+  const inputTensor = tf.tensor3d(inputs, [
+    inputs.length,
+    inputLength,
+    featureLength,
+  ]);
+  const outputTensor = tf.tensor2d(outputs, [outputs.length, featureLength]);
+
+  return { inputTensor, outputTensor };
+}
+
+export { loadModel, createModel, oneHotEncode, padSequence, preprocessData };
