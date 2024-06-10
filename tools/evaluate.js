@@ -1,6 +1,18 @@
 import { readFileSync } from 'fs';
-import { dataPath } from './config.js';
-import { loadModel, preprocessData } from './index.js';
+import {
+  dataPath,
+  entities,
+  events,
+  featureLength,
+  inputLength,
+} from './config.js';
+import * as tf from '@tensorflow/tfjs-node';
+import {
+  loadModel,
+  oneHotEncode,
+  padSequence,
+  preprocessData,
+} from './index.js';
 function loadTestData() {
   const rawData = readFileSync(`${dataPath}/test.json`, 'utf8');
   const testData = JSON.parse(rawData);
@@ -24,4 +36,30 @@ async function evaluateModel() {
   console.log(`Test accuracy: ${(accuracy * 100).toFixed(2)}%`);
 }
 
-export { evaluateModel };
+/**
+ * Function to make a prediction based on a sequence of events
+ * @param {string} sequence - The sequence of events
+ */
+async function makePrediction(sequence) {
+  try {
+    const encodedSequence = padSequence(oneHotEncode(sequence), inputLength);
+    const inputTensor = tf.tensor3d(
+      [encodedSequence],
+      [1, inputLength, featureLength]
+    );
+
+    const model = await loadModel();
+    const prediction = model.predict(inputTensor);
+    const predictedIndex = prediction.argMax(-1).dataSync()[0];
+
+    const eventIndex = predictedIndex % events.length;
+    const entityIndex = Math.floor(predictedIndex / events.length);
+    const nextStep = `${entities[entityIndex]}:${events[eventIndex]}`;
+
+    console.log(`Predicted next step: ${nextStep}`);
+  } catch (e) {
+    console.error('Error making prediction', e);
+  }
+}
+
+export { evaluateModel, makePrediction };
