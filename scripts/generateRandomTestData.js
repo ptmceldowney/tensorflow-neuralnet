@@ -61,11 +61,9 @@ function generateRandomData(numSamples, maxLength) {
 /**
  * Split data into training, validation, and test sets
  * @param {*} data
- * @param {*} trainingRatio
- * @param {*} validationRatio
  * @returns
  */
-function splitData(data, trainingRatio, validationRatio) {
+function splitData(data) {
   const trainSize = Math.floor(data.length * trainingRatio);
   const valSize = Math.floor(data.length * validationRatio);
 
@@ -82,12 +80,7 @@ function splitData(data, trainingRatio, validationRatio) {
  * @param {*} validationSamples
  * @param {*} maxLength
  */
-function generateAndSaveData(
-  totalSamples,
-  trainingRatio,
-  validationRatio,
-  maxLength
-) {
+function generateAndSaveData(totalSamples, maxLength) {
   const data = generateRandomData(totalSamples, maxLength);
   const { trainingData, validationData, testData } = splitData(
     data,
@@ -113,4 +106,4 @@ function generateAndSaveData(
 const totalSamples = 1400;
 const maxLength = 10; // Maximum length of the input sequences
 
-generateAndSaveData(totalSamples, trainingRatio, validationRatio, maxLength);
+generateAndSaveData(totalSamples, maxLength);
