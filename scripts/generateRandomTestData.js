@@ -18,7 +18,16 @@ function generateRandomRequence(maxLength) {
 
   for (let i = 0; i < sequenceLength; i++) {
     const randomEntity = entities[Math.floor(Math.random() * entities.length)];
-    const randomEvent = events[Math.floor(Math.random() * events.length)];
+    let randomEvent;
+    // Ensure that only drivers can have 'apply' and 'hire' events
+    if (randomEntity === 'driver') {
+      randomEvent = events[Math.floor(Math.random() * events.length)];
+    } else {
+      randomEvent = events.filter(
+        event => event !== 'apply' && event !== 'hire'
+      )[Math.floor(Math.random() * (events.length - 2))];
+    }
+
     sequence.push(`${randomEntity}:${randomEvent}`);
   }
 
