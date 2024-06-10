@@ -17,6 +17,7 @@ import {
   events,
   entities,
 } from './tools/config.js';
+import { evaluateModel } from './tools/evaluate.js';
 
 /**
  * Trains an existing model or creates a new model based on the cli argument
@@ -154,11 +155,15 @@ yargs(hideBin(process.argv))
         description: 'The sequence of events (driver:apply|us:sms|driver:hire)',
         alias: 's',
         type: 'string',
-        demandOption: true,
+        demandOption: false,
       },
     },
     argv => {
-      makePrediction(argv.sequence);
+      if (argv.sequence) {
+        makePrediction(argv.sequence);
+      } else {
+        evaluateModel();
+      }
     }
   )
   .demandCommand(1, 'You need to specify a command (train or add)')
