@@ -1,4 +1,4 @@
-import { dataPath, trainSplit, valSplit } from '../tools/config.js';
+import { dataPath, trainingRatio, validationRatio } from '../tools/config.js';
 import { readFileSync, writeFileSync } from 'fs';
 
 const trainingData = JSON.parse(
@@ -6,8 +6,8 @@ const trainingData = JSON.parse(
 );
 
 // split data into Training, validation, and test sets
-const trainSize = Math.floor(trainingData.length * trainSplit);
-const valSize = Math.floor(trainingData.length * valSplit);
+const trainSize = Math.floor(trainingData.length * trainingRatio);
+const valSize = Math.floor(trainingData.length * validationRatio);
 
 // shuffle data in case it's ordered in anyway, this would through off the model fitting
 const shuffledData = trainingData.sort(() => 0.5 - Math.random());

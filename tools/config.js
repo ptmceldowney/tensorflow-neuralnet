@@ -18,8 +18,8 @@ const dataPath = path.join(__dirname, '../data');
 const modelPath = path.join(__dirname, '../model');
 
 // data split
-const trainSplit = 0.7;
-const valSplit = 0.15;
+const trainingRatio = 0.7; // 70% training
+const validationRatio = 0.15; // 15% validation, remaining 15% for testing
 
 export {
   events,
@@ -28,6 +28,6 @@ export {
   dataPath,
   modelPath,
   featureLength,
-  trainSplit,
-  valSplit,
+  trainingRatio,
+  validationRatio,
 };

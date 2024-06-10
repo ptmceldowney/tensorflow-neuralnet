@@ -1,42 +1,846 @@
 [
   {
-    "input": "driver:apply|us:wait|us:sms|us:email|driver:hire",
+    "input": "us:hire|us:hire|driver:apply|us:apply|us:email|driver:hire|driver:email|us:apply",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:apply|us:apply|us:wait|driver:hire|us:sms|us:email|us:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:apply|driver:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:hire|us:sms|driver:wait|driver:apply|us:wait|driver:sms|us:apply|driver:sms|us:hire|us:wait",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:sms|us:wait|driver:apply|us:apply|driver:hire|us:sms|driver:wait|us:hire|driver:apply",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:email|driver:wait|us:email|driver:email|us:sms|driver:sms|driver:email",
+    "output": "us:email"
+  },
+  {
+    "input": "us:email|driver:hire|us:sms|us:wait|driver:sms|driver:wait",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:sms|driver:email|us:hire|us:email|us:sms|driver:hire|us:hire|driver:email|us:apply",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:hire|driver:wait",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:hire|driver:apply|driver:wait|us:hire|driver:email|us:wait|driver:sms|us:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "us:apply",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:wait|us:sms|us:wait|us:wait|us:hire|us:sms|driver:apply|driver:email",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:wait|us:email|driver:sms|driver:wait|driver:wait|driver:email|us:hire",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:wait|us:hire|driver:apply|driver:email|us:hire|us:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:email|us:wait|us:sms",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:apply",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:email|us:wait|driver:hire",
+    "input": "driver:sms|driver:hire|driver:hire|us:hire|driver:apply|us:sms",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:hire|us:sms|us:apply|driver:apply|driver:email|driver:hire|driver:wait|driver:sms|driver:wait",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:sms|driver:sms|us:hire|driver:apply|us:wait",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:email|driver:apply|us:hire|us:hire|us:hire|driver:sms|us:wait",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:email|us:sms",
+    "input": "us:sms|driver:sms|driver:apply|us:email|us:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:sms|us:sms",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:wait|us:apply|us:apply",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:email|us:email|us:email|us:apply|us:apply|driver:apply",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:sms|us:email|us:wait|driver:hire",
+    "input": "us:wait|us:hire|us:wait|us:wait|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:hire",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|driver:hire|driver:wait|us:apply|us:wait|driver:email|us:hire|driver:sms|us:hire|us:email",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:apply|us:email|us:apply|us:email|driver:sms|us:email",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:email",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:sms|us:apply|driver:apply|driver:wait|driver:apply|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:apply|us:apply|us:hire|us:apply",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:email|us:sms|us:sms|driver:apply|driver:email|driver:email|us:email",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:hire",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:wait|us:sms|us:email",
+    "input": "driver:apply|us:email|us:email|driver:apply|driver:apply|us:email",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:apply|us:hire|driver:hire",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:email|driver:apply|us:hire|driver:wait|us:hire|us:sms|driver:email|driver:sms|us:apply",
     "output": "driver:wait"
   },
   {
-    "input": "driver:apply|us:wait|us:email|us:sms|driver:hire",
+    "input": "driver:sms|driver:email|driver:hire|us:email|driver:wait",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:apply|us:email|driver:wait",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:email|us:email|us:sms|driver:email|driver:hire|driver:email|driver:hire|driver:email|us:hire",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:wait|us:hire|us:email",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:wait|driver:hire|us:wait|us:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "us:email|driver:wait|driver:apply|us:email|us:apply|driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:email|us:wait|us:wait|us:apply|driver:wait|driver:sms|us:apply|us:hire|driver:sms|driver:sms",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:wait|us:sms|us:email|driver:hire|us:wait",
+    "input": "us:email|us:apply|us:hire|us:sms|driver:hire|driver:hire",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:wait|driver:wait",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:wait|us:sms|driver:hire|us:email",
+    "input": "us:hire|driver:hire|driver:sms|driver:hire",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:hire|driver:email|us:apply",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:apply|driver:hire|us:apply|driver:wait|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:apply|us:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:apply|us:email|us:apply",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:apply|us:apply|driver:hire|driver:email|driver:wait|us:wait|driver:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:email|us:hire|driver:wait|driver:email|us:wait",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:sms|driver:hire|us:wait|us:email|us:sms",
+    "input": "driver:wait|us:hire|us:hire|us:apply|us:hire|us:hire|driver:sms",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:sms|us:apply|us:hire|driver:apply|us:apply|driver:apply|driver:email|driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:sms|us:apply|driver:sms|driver:hire",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:apply|us:wait|us:email|us:hire|us:apply|us:email",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:sms|driver:hire|driver:hire",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:wait|driver:wait|driver:apply|driver:hire|us:apply|us:hire|driver:apply|driver:email|driver:email|driver:wait",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:sms|driver:hire|us:sms|driver:hire|us:wait|us:hire|driver:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:hire|driver:email|driver:wait|us:email",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:apply|us:email|us:hire|us:wait|us:hire|driver:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "us:email|driver:email|driver:sms|driver:sms|us:hire|driver:email|us:email",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:email|driver:wait|driver:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:apply|driver:apply|driver:email|driver:sms|us:sms|us:sms|us:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:apply|us:wait",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:apply|us:hire|driver:sms|driver:sms|driver:wait|us:email|driver:hire|driver:email|us:apply|us:wait",
     "output": "driver:hire"
   },
   {
-    "input": "driver:apply|us:email|us:wait|us:sms|driver:hire",
+    "input": "driver:apply|driver:wait|driver:hire|driver:wait|driver:wait|us:wait|driver:wait|us:wait|us:wait|driver:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:wait|us:email|driver:hire|driver:sms|driver:wait|us:hire|us:wait|driver:email|driver:wait|driver:hire",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:apply|driver:sms|driver:sms|us:wait|us:hire",
     "output": "driver:hire"
+  },
+  {
+    "input": "driver:email|driver:hire|us:email|driver:sms|us:hire|driver:apply|us:apply|us:hire|us:wait|us:sms",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:apply|us:apply|driver:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:hire|driver:hire|us:apply|driver:apply|driver:wait|us:email|driver:wait|driver:hire|us:hire|driver:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "us:apply|driver:hire",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:wait|driver:apply|driver:hire|us:sms|us:wait|driver:wait|us:sms|driver:email|us:apply|us:email",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:wait|driver:apply|us:email|driver:wait|driver:wait|driver:wait|driver:email|us:wait",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:wait|us:sms|driver:email",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:hire",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:sms|driver:apply|us:email|us:sms|driver:wait|us:hire",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:sms|driver:apply",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:email|us:sms|us:apply|driver:hire|us:email|driver:sms|driver:wait|driver:sms|us:apply",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:wait|us:email|us:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:sms|us:hire|driver:email|us:wait|us:hire|driver:hire|driver:sms|driver:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:apply|us:apply|us:wait|driver:sms|us:apply|driver:apply|us:email|us:sms|us:hire",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:wait|us:wait|us:sms|driver:apply|driver:email|driver:email|us:apply|us:sms|driver:hire|driver:wait",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:email|driver:apply|us:email|driver:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:wait|us:wait|us:apply|us:sms|us:hire|us:wait|driver:email",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:sms|driver:email|driver:sms|us:email|us:apply|us:hire",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:email|driver:hire|driver:wait|us:hire|us:hire|driver:apply|driver:email",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:wait",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:apply|us:email|us:hire|driver:apply|driver:apply|driver:email",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:sms|us:hire|us:wait|us:wait|us:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:email",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:apply|us:apply|us:hire|driver:hire|us:wait|us:wait|us:wait|us:wait",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:email|us:wait|driver:wait|us:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:hire|us:apply|us:wait|us:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:hire|driver:apply|driver:hire|us:wait|us:wait|us:hire|us:apply|driver:wait|driver:hire|driver:apply",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:email|us:email|us:sms|driver:hire",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:apply|us:hire",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:wait|us:apply|us:sms|us:wait|driver:wait|us:hire",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:wait|us:hire|us:wait|driver:wait|driver:apply|driver:sms|us:hire|driver:apply|us:hire",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:sms|us:email|driver:hire|driver:sms|driver:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:sms|us:apply|driver:hire|driver:hire|us:apply|driver:sms|driver:sms|us:apply",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:hire|us:wait|driver:apply|driver:hire|driver:sms|driver:apply|us:wait",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:apply",
+    "output": "us:hire"
+  },
+  {
+    "input": "driver:apply|driver:email",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:email|driver:email|driver:email|us:sms|us:sms|driver:email|us:wait|us:apply|us:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:email|driver:wait|driver:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:sms|us:email|us:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:email|us:wait|driver:hire|driver:email|us:wait|driver:sms|driver:apply|driver:wait|us:email",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:email|us:apply|driver:sms|us:sms|us:sms|driver:hire|us:hire|driver:email|driver:hire|driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:wait|us:email|us:wait|us:hire|us:email|driver:sms|driver:sms|driver:hire|driver:wait|us:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:hire|driver:email|us:sms|driver:sms|driver:hire|driver:sms|us:wait|us:email|us:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:wait|driver:email|driver:wait|driver:sms|driver:sms|us:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "us:hire|us:apply|us:hire|us:wait|driver:email|driver:wait|driver:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:wait|us:apply|us:wait|driver:wait|us:sms|us:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:apply|us:hire|driver:wait",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:sms|driver:sms|us:wait|driver:hire|driver:apply|us:apply|driver:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:sms|driver:apply|us:email|driver:email|driver:hire|driver:email|us:hire|us:apply",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:apply|us:apply",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:wait|driver:hire|us:hire|driver:email|us:sms|driver:sms|us:email|us:sms|driver:hire",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:email|us:wait|driver:wait|us:wait|us:sms|driver:hire|driver:wait|us:apply",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:wait",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:sms|driver:email|us:sms|driver:sms|us:wait|driver:sms|driver:apply|us:sms|driver:sms|us:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:wait|driver:hire|us:email|us:email|us:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:apply|driver:hire",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:sms|driver:hire|driver:sms",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:email|us:wait|us:sms|us:hire|us:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:apply|us:sms|us:hire|us:apply|driver:sms|us:hire|us:email",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:email|us:hire|us:apply|us:email|driver:sms|us:sms|us:email|driver:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "us:sms|driver:wait|us:wait|driver:email|us:hire|us:apply|us:wait|driver:wait|us:wait|us:wait",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:sms|driver:hire",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:sms|us:hire|us:apply|us:wait|us:sms|us:apply|us:hire|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire",
+    "output": "us:wait"
+  },
+  {
+    "input": "us:sms|us:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:wait|us:hire|driver:wait|driver:email|us:sms|us:apply|us:hire|driver:apply|driver:apply",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:email|us:email|driver:apply|us:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "us:wait|driver:sms|us:email|driver:wait|us:wait|us:apply|driver:apply",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:hire|driver:wait|driver:email|us:hire|us:hire|us:wait",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:email|us:sms|us:email|driver:apply|driver:sms|driver:apply|us:wait|driver:email",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:hire|driver:sms|us:email|driver:email|driver:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:sms|us:wait|us:hire|us:wait|us:sms|us:apply|driver:wait",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:email|driver:apply|driver:wait|driver:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:wait|us:apply|driver:sms|us:email|driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:hire|driver:hire",
+    "output": "us:email"
+  },
+  {
+    "input": "us:apply|driver:sms",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:email|us:wait|driver:hire|us:wait|driver:apply|driver:sms|us:wait|driver:apply",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:hire|us:hire|driver:hire|driver:sms|us:email|us:wait|us:sms|us:hire|us:hire|us:apply",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:hire|driver:sms|us:email|us:wait|us:sms|driver:wait|us:wait|driver:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:email|driver:sms|driver:email|us:email|driver:sms|driver:wait|us:hire|driver:apply|driver:wait",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:email|driver:email|us:email|driver:email|driver:hire",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:apply|us:apply|us:email",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:hire|us:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "us:hire|us:apply|us:apply|driver:apply|driver:hire|driver:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:hire|driver:apply|us:sms",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:hire|us:hire|us:wait|us:hire|driver:email|us:email|us:apply|driver:wait",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:email|driver:sms|driver:wait|us:wait|us:apply|us:apply",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:sms|driver:apply|driver:email|us:email|us:sms|us:email|driver:email|us:apply",
+    "output": "driver:sms"
+  },
+  {
+    "input": "driver:email|us:apply|us:email|us:wait|us:email|driver:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:wait|us:wait|us:email|us:wait|us:wait|us:wait|driver:sms|us:hire|driver:hire|us:wait",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:sms|us:email|us:hire|driver:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "us:apply|driver:apply",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:hire|us:apply|driver:sms|driver:email|us:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:hire|driver:wait|us:wait|driver:hire|driver:apply|us:email",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:sms|driver:wait",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:wait|driver:wait|us:email|driver:wait",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:hire|driver:hire|driver:hire|us:wait|driver:hire",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:email|us:apply|us:email|driver:wait|driver:wait|us:apply|driver:email|driver:email|driver:apply",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:email|us:apply|driver:apply|us:apply|us:hire|us:apply|us:hire|us:apply|driver:hire|driver:wait",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:hire|us:hire|us:sms|driver:apply|driver:hire|driver:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "driver:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "driver:email|us:sms|us:wait",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:hire|driver:sms|driver:sms|us:hire|us:email",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:hire|us:sms|us:hire|driver:apply|driver:apply|us:apply",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:hire|us:apply|driver:email",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:hire|us:hire|driver:email|driver:hire|driver:email|us:apply|driver:wait|us:email|driver:wait|us:hire",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:sms|driver:wait|driver:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:hire|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:apply|us:sms|us:email|us:sms|us:email|driver:email|driver:hire|us:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:sms|us:hire|us:sms|us:apply",
+    "output": "driver:wait"
+  },
+  {
+    "input": "us:wait|us:wait|driver:hire|us:apply|driver:hire|driver:sms|us:wait|driver:wait",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:email|driver:apply|us:hire|driver:sms|driver:wait",
+    "output": "us:sms"
+  },
+  {
+    "input": "us:hire|us:wait|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:sms|driver:sms|us:apply|driver:sms|us:apply|us:sms|driver:apply|us:sms|driver:apply|driver:wait",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:email",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:sms|us:sms|driver:sms",
+    "output": "driver:apply"
+  },
+  {
+    "input": "us:wait|us:wait|driver:email|driver:sms|driver:sms|driver:apply|us:hire|us:wait|driver:sms|us:hire",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:hire|us:apply|us:sms|us:sms|us:sms|driver:hire|us:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:wait|us:email|driver:wait|us:apply|driver:hire|driver:wait|driver:email|driver:wait",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:apply|driver:hire|driver:sms",
+    "output": "us:apply"
+  },
+  {
+    "input": "driver:hire|us:email|us:hire|driver:hire",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:hire|us:sms|driver:wait|us:sms|us:sms|driver:sms",
+    "output": "driver:hire"
+  },
+  {
+    "input": "us:sms|driver:wait|us:apply|us:sms|driver:sms|us:email|us:email|us:wait|driver:wait|driver:email",
+    "output": "us:apply"
+  },
+  {
+    "input": "us:email|us:email|driver:apply|driver:wait|us:apply",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:wait|us:apply|us:sms",
+    "output": "driver:email"
+  },
+  {
+    "input": "us:email|us:wait|driver:email|driver:hire|driver:sms",
+    "output": "driver:sms"
+  },
+  {
+    "input": "us:sms|us:apply",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:wait|us:hire|us:apply|us:sms",
+    "output": "us:wait"
+  },
+  {
+    "input": "driver:sms|us:email|driver:hire|driver:email|us:hire|driver:wait",
+    "output": "driver:apply"
+  },
+  {
+    "input": "driver:email|us:wait|us:apply|driver:email|driver:hire|driver:apply|us:email|us:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "driver:email|driver:sms",
+    "output": "us:email"
+  },
+  {
+    "input": "us:sms|driver:sms|driver:sms|driver:apply|driver:sms|us:email|driver:hire|driver:hire",
+    "output": "us:hire"
+  },
+  {
+    "input": "us:sms|driver:wait|us:hire|us:hire|driver:sms",
+    "output": "us:sms"
+  },
+  {
+    "input": "driver:apply|us:email|driver:wait|driver:sms|driver:email",
+    "output": "driver:wait"
+  },
+  {
+    "input": "driver:wait|us:apply|us:sms|us:hire|us:email|us:email|us:sms",
+    "output": "driver:email"
   }
 ]
