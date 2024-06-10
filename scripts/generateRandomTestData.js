@@ -19,16 +19,23 @@ function generateRandomRequence(maxLength) {
   for (let i = 0; i < sequenceLength; i++) {
     const randomEntity = entities[Math.floor(Math.random() * entities.length)];
     let randomEvent;
-    // Ensure that only drivers can have 'apply' and 'hire' events
+
     if (randomEntity === 'driver') {
-      randomEvent = events[Math.floor(Math.random() * events.length)];
+      // Ensure that the first event is not driver:hire and driver:wait isn't an event anytime
+      randomEvent = events.filter(
+        event => event !== 'wait' || (i === 0 && event !== 'hire')
+      )[Math.floor(Math.random() * (events.length - 1))];
     } else {
+      // Ensure that only drivers have 'apply' and 'hire' events
       randomEvent = events.filter(
         event => event !== 'apply' && event !== 'hire'
       )[Math.floor(Math.random() * (events.length - 2))];
     }
 
     sequence.push(`${randomEntity}:${randomEvent}`);
+
+    // if event is driver:hire we want to break out of the loop because we are done
+    if (sequence[sequence.length - 1] === 'driver:hire') break;
   }
 
   return sequence.join('|');
