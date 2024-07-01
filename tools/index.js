@@ -76,13 +76,20 @@ function createModel() {
   const model = tf.sequential();
   model.add(
     tf.layers.lstm({
-      units: 128,
+      units: 64,
+      returnSequences: true,
       inputShape: [inputLength, featureLength],
-      returnSequences: false,
-      kernelRegularizer: tf.regularizers.l2({ l2: 0.01 }),
     })
   );
-  model.add(tf.layers.dropout({ rate: 0.5 }));
+  model.add(tf.layers.dropout({ rate: 0.3 }));
+
+  model.add(
+    tf.layers.lstm({
+      units: 64,
+    })
+  );
+  model.add(tf.layers.dropout({ rate: 0.3 }));
+
   model.add(
     tf.layers.dense({
       units: featureLength,

@@ -26,8 +26,10 @@ async function trainModel(newModel) {
     const { inputTensor: valXs, outputTensor: valYs } = preprocessData(valData);
 
     await model.fit(trainXs, trainYs, {
-      epochs: 100,
+      epochs: 50,
+      batchSize: 32,
       validationData: [valXs, valYs],
+      verbose: 1,
     });
 
     // save the model

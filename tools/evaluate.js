@@ -19,6 +19,9 @@ function loadTestData() {
   return testData;
 }
 
+/**
+ * Evaluate the model on the test data
+ */
 async function evaluateModel() {
   const testData = loadTestData();
   const { inputTensor, outputTensor } = preprocessData(testData);
